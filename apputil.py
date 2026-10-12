@@ -14,6 +14,12 @@ class Genius:
         response = requests.get(genius_search_url)
         json_data = response.json()
         json_data
+        first_hit = json_data['response']['hits'][0]['0']
+        artist_id = first_hit['result']['primary_artist']['id']
+        artist_name = f"https://api.genius.com/artists/{artist_id}?access_token={self.access_token}"
+        name = requests.get(artist_name)
+        jsonn_data = name.json()
+        jsonn_data
 
 #if __name__ == "__main__":
     #load_dotenv()
