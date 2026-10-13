@@ -1,8 +1,11 @@
 # your code here ...
 import requests
 import os
+import pandas as pd
 
 class Genius:
+
+
     def __init__(self, access_token):
         self.access_token = access_token
     def get_access_token(self):
@@ -19,8 +22,16 @@ class Genius:
         jsonn_data = name.json()
         return jsonn_data
 
-#if __name__ == "__main__":
-    #load_dotenv()
-    # constants
-    #ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
-    #genius = Genius(access_token=ACCESS_TOKEN)
+
+    def get_artists(self, search_terms):
+        artists =[]
+        for i in search_terms:
+            artist = self.get_artist(i)
+            artists_details = {
+                'search_term': i,
+                'artist_name': artist['response']['artist']['name'],
+                'artist_id': artist['response']['artist']['id'],
+                'followers_count': artist['response']['artist'].get('followers_count')
+            }
+            artists.append(artists_details)
+        return pd.DataFrame(artists,columns=['search_term', 'artist_name', 'artist_id', 'followers_count'])
